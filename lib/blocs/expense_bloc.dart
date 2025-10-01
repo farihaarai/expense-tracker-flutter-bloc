@@ -35,14 +35,14 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
           categoryTotals: {"Food": 4.5, "Travel": 2.0, "Entertainment": 10.0},
         ),
       ) {
-    on<LoadExpenses>(_onLoadExpenses);
-    on<AddExpense>(_onAddExpense);
-    on<DeleteExpense>(_onDeleteExpense);
+    on<LoadExpenses>(_onLoadExpensesEvent);
+    on<AddExpense>(_onAddExpenseEvent);
+    on<DeleteExpense>(_onDeleteExpenseEvent);
   }
 
-  void _onLoadExpenses(LoadExpenses event, Emitter<ExpenseState> emit) {}
+  void _onLoadExpensesEvent(LoadExpenses event, Emitter<ExpenseState> emit) {}
 
-  void _onAddExpense(AddExpense event, Emitter<ExpenseState> emit) {
+  void _onAddExpenseEvent(AddExpense event, Emitter<ExpenseState> emit) {
     // Way 1
     List<Expense> list = state.expenses; // existing state expenses
     list.add(event.expense); // add
@@ -60,5 +60,16 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     );
   }
 
-  void _onDeleteExpense(DeleteExpense event, Emitter<ExpenseState> emit) {}
+  void _onDeleteExpenseEvent(DeleteExpense event, Emitter<ExpenseState> emit) {
+    List<Expense> list = state.expenses;
+    final expenseToDelete = list.firstWhere((e) => e.id == event.id);
+    list.removeWhere((e) => e.id == event.id);
+
+    emit(
+      state.copyWith(
+        expenses: list,
+        totalAmount: state.totalAmount - expenseToDelete.amount,
+      ),
+    );
+  }
 }
