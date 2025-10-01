@@ -2,6 +2,7 @@ import 'package:expense_tracker_bloc/blocs/expense_bloc.dart';
 import 'package:expense_tracker_bloc/blocs/expense_event.dart';
 import 'package:expense_tracker_bloc/enums/expense_category.dart';
 import 'package:expense_tracker_bloc/models/expense.dart';
+import 'package:expense_tracker_bloc/models/expense_id_generator.dart';
 import 'package:expense_tracker_bloc/ui/widgets/expense_list.dart';
 import 'package:expense_tracker_bloc/ui/widgets/total_expense.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              _showAddExpenseDialog(context);
+              _showAddExpenseBotttomSheet(context);
             },
             icon: const Icon(Icons.add, color: Colors.white),
           ),
@@ -35,7 +36,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _showAddExpenseDialog(BuildContext context) {
+  void _showAddExpenseBotttomSheet(BuildContext context) {
     final titleController = TextEditingController();
     final amountController = TextEditingController();
     ExpenseCategory selectedCategory = ExpenseCategory.food;
@@ -45,12 +46,7 @@ class HomePage extends StatelessWidget {
 
       if (title.isNotEmpty && amount > 0) {
         final bloc = context.read<ExpenseBloc>();
-        final newId = bloc.state.expenses.isEmpty
-            ? 1
-            : bloc.state.expenses
-                      .map((e) => e.id)
-                      .reduce((a, b) => a > b ? a : b) +
-                  1;
+        final newId = ExpenseIdGenerator.getNextId();
         final newExpense = Expense(
           id: newId,
           title: title,
@@ -64,15 +60,28 @@ class HomePage extends StatelessWidget {
       }
     }
 
-    //  Add Expense Dailog
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (_) {
-        return AlertDialog(
-          title: const Text("Add Expense"),
-          content: Column(
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 24,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Text(
+                "Add Expense",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 12),
               TextField(
                 controller: titleController,
                 decoration: const InputDecoration(labelText: "Title"),
@@ -92,15 +101,20 @@ class HomePage extends StatelessWidget {
                 },
                 decoration: const InputDecoration(labelText: "Category"),
               ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text("Cancel"),
+                  ),
+                  SizedBox(width: 10),
+                  ElevatedButton(onPressed: onSave, child: Text("Save")),
+                ],
+              ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Cancel"),
-            ),
-            ElevatedButton(onPressed: onSave, child: Text("Save")),
-          ],
         );
       },
     );
