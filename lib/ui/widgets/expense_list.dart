@@ -1,12 +1,18 @@
 import 'package:expense_tracker_bloc/blocs/expense_bloc.dart';
 import 'package:expense_tracker_bloc/blocs/expense_event.dart';
 import 'package:expense_tracker_bloc/blocs/expense_state.dart';
+import 'package:expense_tracker_bloc/ui/widgets/edit_expense_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ExpenseList extends StatelessWidget {
+class ExpenseList extends StatefulWidget {
   const ExpenseList({super.key});
 
+  @override
+  State<ExpenseList> createState() => _ExpenseListState();
+}
+
+class _ExpenseListState extends State<ExpenseList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -41,7 +47,23 @@ class ExpenseList extends StatelessWidget {
                   child: ListTile(
                     title: Text(expense.title),
                     subtitle: Text(expense.category.toString().split('.').last),
-                    trailing: Text("\$${expense.amount.toStringAsFixed(2)}"),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("₹${expense.amount.toStringAsFixed(2)}"),
+                        SizedBox(width: 10),
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) =>
+                                  EditExpenseDialog(expense: expense),
+                            );
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

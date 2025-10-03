@@ -9,6 +9,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     // on<LoadExpenses>(_onLoadExpensesEvent);
     on<AddExpense>(_onAddExpenseEvent);
     on<DeleteExpense>(_onDeleteExpenseEvent);
+    on<EditExpense>(_onEditExpenseEvent);
   }
 
   // void _onLoadExpensesEvent(LoadExpenses event, Emitter<ExpenseState> emit) {}
@@ -42,5 +43,21 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
         totalAmount: state.totalAmount - expenseToDelete.amount,
       ),
     );
+  }
+
+  void _onEditExpenseEvent(EditExpense event, Emitter<ExpenseState> emit) {
+    final oldExpense = state.expenses.firstWhere(
+      (e) => e.id == event.expense.id,
+    );
+    final updatedList = state.expenses.map((expense) {
+      if (expense.id == event.expense.id) {
+        return event.expense;
+      }
+      return expense;
+    }).toList();
+    final updatedTotal =
+        state.totalAmount - oldExpense.amount + event.expense.amount;
+
+    emit(state.copyWith(expenses: updatedList, totalAmount: updatedTotal));
   }
 }

@@ -6,6 +6,7 @@ import 'package:expense_tracker_bloc/models/expense.dart';
 import 'package:expense_tracker_bloc/models/expense_id_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class AddExpenseSheet extends StatefulWidget {
   const AddExpenseSheet({super.key});
@@ -109,27 +110,37 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
                 decoration: const InputDecoration(labelText: "Amount"),
                 keyboardType: TextInputType.number,
               ),
-              DropdownButtonFormField(
-                value: selectedCategory,
-                items: ExpenseCategory.values
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c.name)))
-                    .toList(),
-                onChanged: (value) {
-                  if (value != null) selectedCategory = value;
-                },
-                decoration: const InputDecoration(labelText: "Category"),
-              ),
-              const SizedBox(height: 16),
               Row(
                 children: [
-                  Text(
-                    selectedDate == null
-                        ? "No Date Chosen"
-                        : selectedDate!.toLocal().toString().split(' ')[0],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: DropdownButtonFormField(
+                      value: selectedCategory,
+                      items: ExpenseCategory.values
+                          .map(
+                            (c) =>
+                                DropdownMenuItem(value: c, child: Text(c.name)),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        if (value != null) selectedCategory = value;
+                      },
+                      decoration: const InputDecoration(labelText: "Category"),
+                    ),
                   ),
-                  IconButton(
-                    onPressed: _presentDatePicker,
-                    icon: const Icon(Icons.calendar_month),
+                  const SizedBox(width: 50),
+                  Row(
+                    children: [
+                      Text(
+                        selectedDate == null
+                            ? "No Date Chosen"
+                            : DateFormat('dd-MM-yyyy').format(selectedDate!),
+                      ),
+                      IconButton(
+                        onPressed: _presentDatePicker,
+                        icon: const Icon(Icons.calendar_month),
+                      ),
+                    ],
                   ),
                 ],
               ),
