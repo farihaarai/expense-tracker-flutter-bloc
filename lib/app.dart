@@ -8,14 +8,25 @@ class ExpenseTracker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.from(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
-        useMaterial3: false,
+    return BlocProvider(
+      create: (_) => ExpenseBloc(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.from(
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
+          useMaterial3: false,
+        ),
+        home: HomePage(),
       ),
-      home: BlocProvider(create: (_) => ExpenseBloc(), child: HomePage()),
-      // home: HomePage(),
     );
+    // return MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData.from(
+    //     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
+    //     useMaterial3: false,
+    //   ),
+    //   home: BlocProvider(create: (_) => ExpenseBloc(), child: HomePage()),
+    //   // home: HomePage(),
+    // );
   }
 }

@@ -11,7 +11,7 @@ abstract class _$ExpenseStateCWProxy {
 
   ExpenseState totalAmount(double totalAmount);
 
-  ExpenseState categoryTotals(Map<String, double> categoryTotals);
+  ExpenseState categoryTotals(List<CategoryTotal> categoryTotals);
 
   /// Creates a new instance with the provided field values.
   /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `ExpenseState(...).copyWith.fieldName(value)`.
@@ -23,7 +23,7 @@ abstract class _$ExpenseStateCWProxy {
   ExpenseState call({
     List<Expense> expenses,
     double totalAmount,
-    Map<String, double> categoryTotals,
+    List<CategoryTotal> categoryTotals,
   });
 }
 
@@ -42,7 +42,7 @@ class _$ExpenseStateCWProxyImpl implements _$ExpenseStateCWProxy {
       call(totalAmount: totalAmount);
 
   @override
-  ExpenseState categoryTotals(Map<String, double> categoryTotals) =>
+  ExpenseState categoryTotals(List<CategoryTotal> categoryTotals) =>
       call(categoryTotals: categoryTotals);
 
   @override
@@ -73,7 +73,7 @@ class _$ExpenseStateCWProxyImpl implements _$ExpenseStateCWProxy {
               categoryTotals == null
           ? _value.categoryTotals
           // ignore: cast_nullable_to_non_nullable
-          : categoryTotals as Map<String, double>,
+          : categoryTotals as List<CategoryTotal>,
     );
   }
 }

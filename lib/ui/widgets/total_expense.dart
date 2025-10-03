@@ -21,7 +21,7 @@ class TotalExpense extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
-                "\$${state.totalAmount.toStringAsFixed(2)}",
+                "₹${state.totalAmount.toStringAsFixed(2)}",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
