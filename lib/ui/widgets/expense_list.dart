@@ -2,6 +2,7 @@ import 'package:expense_tracker_bloc/blocs/expense_bloc.dart';
 import 'package:expense_tracker_bloc/blocs/expense_event.dart';
 import 'package:expense_tracker_bloc/blocs/expense_state.dart';
 import 'package:expense_tracker_bloc/ui/widgets/edit_expense_dialog.dart';
+import 'package:expense_tracker_bloc/utils/category_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,23 @@ class _ExpenseListState extends State<ExpenseList> {
                 background: Container(color: Colors.red[300]),
                 onDismissed: (direction) {
                   final bloc = context.read<ExpenseBloc>();
+                  final deletedExpense = expense;
                   bloc.add(DeleteExpense(expense.id));
+
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Deleted ${deletedExpense.title}"),
+
+                      duration: Duration(seconds: 3),
+                      action: SnackBarAction(
+                        label: "Undo",
+                        onPressed: () {
+                          bloc.add(AddExpense(deletedExpense));
+                        },
+                      ),
+                    ),
+                  );
                 },
                 child: Card(
                   margin: const EdgeInsets.symmetric(
@@ -44,6 +61,7 @@ class _ExpenseListState extends State<ExpenseList> {
                     borderRadius: BorderRadius.circular(12),
                   ),
 
+                  // color: getCategoryColor(expense.category),
                   child: ListTile(
                     title: Text(expense.title),
                     subtitle: Text(expense.category.toString().split('.').last),

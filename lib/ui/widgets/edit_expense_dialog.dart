@@ -120,7 +120,7 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
               Text(
                 selectedDate == null
                     ? "No Date Chosen"
-                    : DateFormat('dd-MM-yyyy').format(selectedDate!),
+                    : DateFormat('dd/MM/yyyy').format(selectedDate!),
               ),
               IconButton(
                 onPressed: presentDatePicker,

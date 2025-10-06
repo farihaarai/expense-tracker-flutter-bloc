@@ -18,7 +18,7 @@ class AddExpenseSheet extends StatefulWidget {
 class _AddExpenseSheetState extends State<AddExpenseSheet> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
-  ExpenseCategory selectedCategory = ExpenseCategory.food;
+  ExpenseCategory selectedCategory = ExpenseCategory.Food;
   DateTime? selectedDate;
 
   void _presentDatePicker() async {
@@ -128,13 +128,13 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
                       decoration: const InputDecoration(labelText: "Category"),
                     ),
                   ),
-                  const SizedBox(width: 50),
+                  const SizedBox(width: 10),
                   Row(
                     children: [
                       Text(
                         selectedDate == null
                             ? "No Date Chosen"
-                            : DateFormat('dd-MM-yyyy').format(selectedDate!),
+                            : DateFormat('dd/MM/yyyy').format(selectedDate!),
                       ),
                       IconButton(
                         onPressed: _presentDatePicker,
