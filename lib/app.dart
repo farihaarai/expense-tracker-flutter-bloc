@@ -13,7 +13,7 @@ class ExpenseTracker extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData.from(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.teal),
           useMaterial3: false,
         ),
         home: HomePage(),

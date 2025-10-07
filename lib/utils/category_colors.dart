@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 Color getCategoryColor(ExpenseCategory category) {
   switch (category) {
     case ExpenseCategory.Food:
-      return Colors.orange.shade200;
+      return Colors.orangeAccent.shade100; // warm & appetizing
     case ExpenseCategory.Transport:
-      return Colors.blueGrey.shade200;
+      return Colors.lightBlueAccent.shade100; // clean & calm
     case ExpenseCategory.Shopping:
-      return Colors.purple.shade200;
+      return Colors.deepPurpleAccent.shade100; // energetic
     case ExpenseCategory.Bills:
-      return Colors.red.shade200;
+      return Colors.redAccent.shade100; // attention-grabbing
     case ExpenseCategory.Health:
-      return Colors.green.shade200;
+      return Colors.greenAccent.shade100; // fresh & positive
     case ExpenseCategory.Entertainment:
-      return Colors.pink.shade200;
+      return Colors.tealAccent.shade100; // fun & lively
     case ExpenseCategory.Education:
-      return Colors.indigo.shade200;
+      return Colors.indigoAccent.shade100; // calm & intellectual
     case ExpenseCategory.Travel:
-      return Colors.teal.shade200;
+      return Colors.cyanAccent.shade100; // refreshing & airy
     case ExpenseCategory.Others:
-      return Colors.grey.shade300;
+      return Colors.grey.shade300; // neutral fallback
   }
 }

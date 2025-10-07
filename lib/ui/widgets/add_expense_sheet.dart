@@ -3,7 +3,6 @@ import 'package:expense_tracker_bloc/blocs/expense_event.dart';
 import 'package:expense_tracker_bloc/blocs/expense_state.dart';
 import 'package:expense_tracker_bloc/enums/expense_category.dart';
 import 'package:expense_tracker_bloc/models/expense.dart';
-import 'package:expense_tracker_bloc/models/expense_id_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -43,7 +42,6 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
     final amount = double.tryParse(amountController.text) ?? 0.0;
 
     if (title.isEmpty || amount <= 0 || selectedDate == null) {
-      // Show alert if input is invalid
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -61,10 +59,9 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
       );
       return;
     }
+
     final bloc = context.read<ExpenseBloc>();
-    // final newId = ExpenseIdGenerator.getNextId();
     final newExpense = Expense(
-      // id: newId,
       title: title,
       amount: amount,
       date: selectedDate!,
@@ -84,36 +81,69 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocBuilder<ExpenseBloc, ExpenseState>(
       builder: (context, state) {
-        return Padding(
+        return SingleChildScrollView(
           padding: EdgeInsets.only(
-            left: 16,
-            right: 16,
+            left: 20,
+            right: 20,
             top: 24,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 24,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                "Add Expense",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade400,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
               ),
-              const SizedBox(height: 12),
+              Center(
+                child: Text(
+                  "Add Expense",
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Title field
               TextField(
                 controller: titleController,
-                decoration: const InputDecoration(labelText: "Title"),
+                decoration: const InputDecoration(
+                  labelText: "Title",
+                  border: OutlineInputBorder(),
+                ),
               ),
+              const SizedBox(height: 12),
+
+              // Amount field
               TextField(
                 controller: amountController,
-                decoration: const InputDecoration(labelText: "Amount"),
-                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: "Amount",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
               ),
+              const SizedBox(height: 12),
+
+              // Category and Date
               Row(
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
+                  Expanded(
+                    flex: 1,
                     child: DropdownButtonFormField(
                       value: selectedCategory,
                       items: ExpenseCategory.values
@@ -123,37 +153,75 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
                           )
                           .toList(),
                       onChanged: (value) {
-                        if (value != null) selectedCategory = value;
+                        if (value != null) {
+                          setState(() => selectedCategory = value);
+                        }
                       },
-                      decoration: const InputDecoration(labelText: "Category"),
+                      decoration: const InputDecoration(
+                        labelText: "Category",
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Row(
-                    children: [
-                      Text(
-                        selectedDate == null
-                            ? "No Date Chosen"
-                            : DateFormat('dd/MM/yyyy').format(selectedDate!),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: _presentDatePicker,
+                      borderRadius: BorderRadius.circular(8),
+                      child: InputDecorator(
+                        decoration: const InputDecoration(
+                          labelText: "Date",
+                          border: OutlineInputBorder(),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              selectedDate == null
+                                  ? "Select"
+                                  : DateFormat(
+                                      'dd/MM/yyyy',
+                                    ).format(selectedDate!),
+                              style: TextStyle(
+                                color: selectedDate == null
+                                    ? Colors.grey.shade600
+                                    : theme.textTheme.bodyMedium?.color,
+                              ),
+                            ),
+                            const Icon(Icons.calendar_today, size: 18),
+                          ],
+                        ),
                       ),
-                      IconButton(
-                        onPressed: _presentDatePicker,
-                        icon: const Icon(Icons.calendar_month),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
+
+              // Buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                   ),
-                  SizedBox(width: 10),
-                  ElevatedButton(onPressed: onSave, child: Text("Save")),
+                  const SizedBox(width: 12),
+                  ElevatedButton.icon(
+                    onPressed: onSave,
+                    icon: const Icon(Icons.save_outlined),
+                    label: const Text("Save"),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],
