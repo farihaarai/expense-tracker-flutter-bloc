@@ -2,18 +2,12 @@ import 'package:expense_tracker_bloc/blocs/expense_bloc.dart';
 import 'package:expense_tracker_bloc/blocs/expense_event.dart';
 import 'package:expense_tracker_bloc/blocs/expense_state.dart';
 import 'package:expense_tracker_bloc/ui/widgets/edit_expense_dialog.dart';
-import 'package:expense_tracker_bloc/utils/category_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ExpenseList extends StatefulWidget {
+class ExpenseList extends StatelessWidget {
   const ExpenseList({super.key});
 
-  @override
-  State<ExpenseList> createState() => _ExpenseListState();
-}
-
-class _ExpenseListState extends State<ExpenseList> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -34,13 +28,12 @@ class _ExpenseListState extends State<ExpenseList> {
                 onDismissed: (direction) {
                   final bloc = context.read<ExpenseBloc>();
                   final deletedExpense = expense;
-                  bloc.add(DeleteExpense(expense.id));
+                  bloc.add(DeleteExpense(expense.id!));
 
                   ScaffoldMessenger.of(context).clearSnackBars();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text("Deleted ${deletedExpense.title}"),
-
                       duration: Duration(seconds: 3),
                       action: SnackBarAction(
                         label: "Undo",
@@ -78,7 +71,7 @@ class _ExpenseListState extends State<ExpenseList> {
                                   EditExpenseDialog(expense: expense),
                             );
                           },
-                          icon: Icon(Icons.edit),
+                          icon: Icon(Icons.edit, color: Colors.blueAccent),
                         ),
                       ],
                     ),

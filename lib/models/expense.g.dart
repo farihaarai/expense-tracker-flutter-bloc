@@ -7,7 +7,7 @@ part of 'expense.dart';
 // **************************************************************************
 
 abstract class _$ExpenseCWProxy {
-  Expense id(int id);
+  Expense id(int? id);
 
   Expense title(String title);
 
@@ -25,7 +25,7 @@ abstract class _$ExpenseCWProxy {
   /// Expense(...).copyWith(id: 12, name: "My name")
   /// ```
   Expense call({
-    int id,
+    int? id,
     String title,
     double amount,
     DateTime date,
@@ -41,7 +41,7 @@ class _$ExpenseCWProxyImpl implements _$ExpenseCWProxy {
   final Expense _value;
 
   @override
-  Expense id(int id) => call(id: id);
+  Expense id(int? id) => call(id: id);
 
   @override
   Expense title(String title) => call(title: title);
@@ -71,10 +71,10 @@ class _$ExpenseCWProxyImpl implements _$ExpenseCWProxy {
     Object? category = const $CopyWithPlaceholder(),
   }) {
     return Expense(
-      id: id == const $CopyWithPlaceholder() || id == null
+      id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int,
+          : id as int?,
       title: title == const $CopyWithPlaceholder() || title == null
           ? _value.title
           // ignore: cast_nullable_to_non_nullable

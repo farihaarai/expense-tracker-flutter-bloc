@@ -62,9 +62,9 @@ class _AddExpenseSheetState extends State<AddExpenseSheet> {
       return;
     }
     final bloc = context.read<ExpenseBloc>();
-    final newId = ExpenseIdGenerator.getNextId();
+    // final newId = ExpenseIdGenerator.getNextId();
     final newExpense = Expense(
-      id: newId,
+      // id: newId,
       title: title,
       amount: amount,
       date: selectedDate!,
