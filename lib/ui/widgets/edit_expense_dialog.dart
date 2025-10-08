@@ -53,7 +53,7 @@ class _EditExpenseDialogState extends State<EditExpenseDialog> {
     final title = titleController.text.trim();
     final amount = double.tryParse(amountController.text) ?? 0.0;
 
-    if (title.isEmpty || amount <= 0 || selectedDate == null) {
+    if (title.isEmpty || amount <= 0) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(

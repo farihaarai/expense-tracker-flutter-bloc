@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // total expense card
               Card(
                 elevation: 1,
                 color: theme.colorScheme.surfaceContainerHighest,
@@ -71,7 +72,16 @@ class _HomePageState extends State<HomePage> {
                   child: TotalExpense(),
                 ),
               ),
+
               const SizedBox(height: 16),
+              // Category Chart (updates automatically via BlocBuilder)
+              // BlocBuilder<ExpenseBloc, ExpenseState>(
+              //   builder: (context, state) {
+              //     return CategoryChart(categoryTotals: state.categoryTotals);
+              //   },
+              // ),
+              // const SizedBox(height: 16),
+              // Expense list
               Expanded(
                 child: Card(
                   elevation: 1,

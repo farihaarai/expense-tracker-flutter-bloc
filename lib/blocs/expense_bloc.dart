@@ -34,8 +34,9 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     AddExpense event,
     Emitter<ExpenseState> emit,
   ) async {
-    await _repository.addExpense(event.expense);
-    List<Expense> newList = [...state.expenses, event.expense];
+    final generatedId = await _repository.addExpense(event.expense);
+    final expenseWithId = event.expense.copyWith(id: generatedId);
+    List<Expense> newList = [...state.expenses, expenseWithId];
 
     // emit new state
     emit(

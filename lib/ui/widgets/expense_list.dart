@@ -58,6 +58,7 @@ class ExpenseList extends StatelessWidget {
               onDismissed: (direction) {
                 final bloc = context.read<ExpenseBloc>();
                 final deletedExpense = expense;
+
                 bloc.add(DeleteExpense(expense.id!));
 
                 ScaffoldMessenger.of(context).clearSnackBars();
