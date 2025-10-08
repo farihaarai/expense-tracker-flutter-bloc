@@ -1,6 +1,8 @@
 import 'package:expense_tracker_bloc/blocs/expense_bloc.dart';
 import 'package:expense_tracker_bloc/blocs/expense_event.dart';
+import 'package:expense_tracker_bloc/blocs/expense_state.dart';
 import 'package:expense_tracker_bloc/ui/widgets/add_expense_sheet.dart';
+import 'package:expense_tracker_bloc/ui/widgets/category_chart.dart';
 import 'package:expense_tracker_bloc/ui/widgets/expense_list.dart';
 import 'package:expense_tracker_bloc/ui/widgets/total_expense.dart';
 import 'package:flutter/material.dart';
@@ -43,17 +45,32 @@ class _HomePageState extends State<HomePage> {
           "Expense Tracker",
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        centerTitle: true,
+        // centerTitle: true,
         elevation: 1,
         surfaceTintColor: theme.colorScheme.surfaceTint,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                builder: (_) => const AddExpenseSheet(),
+              );
+            },
+            icon: const Icon(Icons.add, color: Colors.white),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: theme.colorScheme.primaryContainer,
-        foregroundColor: theme.colorScheme.onPrimaryContainer,
-        onPressed: _openAddExpenseSheet,
-        label: const Text("Add Expense"),
-        icon: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   backgroundColor: theme.colorScheme.primaryContainer,
+      //   foregroundColor: theme.colorScheme.onPrimaryContainer,
+      //   onPressed: _openAddExpenseSheet,
+      //   label: const Text("Add Expense"),
+      //   icon: const Icon(Icons.add),
+      // ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -75,12 +92,12 @@ class _HomePageState extends State<HomePage> {
 
               const SizedBox(height: 16),
               // Category Chart (updates automatically via BlocBuilder)
-              // BlocBuilder<ExpenseBloc, ExpenseState>(
-              //   builder: (context, state) {
-              //     return CategoryChart(categoryTotals: state.categoryTotals);
-              //   },
-              // ),
-              // const SizedBox(height: 16),
+              BlocBuilder<ExpenseBloc, ExpenseState>(
+                builder: (context, state) {
+                  return CategoryChart(expenses: state.expenses);
+                },
+              ),
+              const SizedBox(height: 12),
               // Expense list
               Expanded(
                 child: Card(

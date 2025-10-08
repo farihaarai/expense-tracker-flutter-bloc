@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 
 class DbHelper {
   static Database? _db;
-  static final bool _resetDB = true;
+  // static final bool _resetDB = true;
   static final String _dbName = "expense_db.db";
   static const int _currentVersion = 3;
   static final DbHelper instance = DbHelper._constructor();
@@ -28,9 +28,9 @@ class DbHelper {
     if (_db != null) return _db!;
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, _dbName);
-    if (_resetDB) {
-      await deleteDatabase(databasePath);
-    }
+    // if (_resetDB) {
+    //   await deleteDatabase(databasePath);
+    // }
     _db = await openDatabase(
       databasePath,
       version: _currentVersion,

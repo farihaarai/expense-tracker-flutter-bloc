@@ -29,11 +29,14 @@ class ExpenseList extends StatelessWidget {
           );
         }
 
+        final sortedExpenses = List.of(state.expenses)
+          ..sort((a, b) => b.date.compareTo(a.date));
+
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           itemCount: state.expenses.length,
           itemBuilder: (context, index) {
-            final expense = state.expenses[index];
+            final expense = sortedExpenses[index];
 
             return Dismissible(
               key: ValueKey(expense.id),

@@ -1,25 +1,34 @@
-import 'package:expense_tracker_bloc/blocs/expense_bloc.dart';
-import 'package:expense_tracker_bloc/blocs/expense_state.dart';
-import 'package:fl_chart/fl_chart.dart';
+// expense_category_chart.dart
+import 'package:expense_tracker_bloc/utils/category_totals.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:expense_tracker_bloc/models/expense.dart';
+import 'package:expense_tracker_bloc/models/category_total.dart';
 
 class CategoryChart extends StatelessWidget {
-  const CategoryChart({super.key});
+  final List<Expense> expenses;
+
+  const CategoryChart({super.key, required this.expenses});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ExpenseBloc, ExpenseState>(
-      builder: (context, state) {
-        if (state.expenses.isEmpty) {
-          return Container(
-            height: 200,
-            alignment: Alignment.center,
-            child: const Text("No data to show"),
-          );
-        }
-        return BarChart(BarChartData());
-      },
+    final categoryTotals = getCategoryTotals(expenses);
+
+    return SizedBox(
+      height: 275,
+      child: SfCartesianChart(
+        primaryXAxis: CategoryAxis(labelRotation: 45),
+        // primaryYAxis: NumericAxis(title: AxisTitle(text: 'Amount Spent')),
+        series: <CartesianSeries<CategoryTotal, String>>[
+          ColumnSeries<CategoryTotal, String>(
+            dataSource: categoryTotals,
+            xValueMapper: (data, _) => data.category.name,
+            yValueMapper: (data, _) => data.total,
+            color: Colors.teal,
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
+          ),
+        ],
+      ),
     );
   }
 }

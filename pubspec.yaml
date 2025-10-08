@@ -43,7 +43,7 @@ dependencies:
   mysql1: ^0.20.0
   sqflite: ^2.4.2
   path: ^1.9.1
-  vector_math: 2.0.8
+  syncfusion_flutter_charts: ^30.1.41
 
 dev_dependencies:
   flutter_test:
