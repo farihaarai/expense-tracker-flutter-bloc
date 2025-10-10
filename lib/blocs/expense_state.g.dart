@@ -9,9 +9,13 @@ part of 'expense_state.dart';
 abstract class _$ExpenseStateCWProxy {
   ExpenseState expenses(List<Expense> expenses);
 
+  ExpenseState filteredExpenses(List<Expense> filteredExpenses);
+
   ExpenseState totalAmount(double totalAmount);
 
   ExpenseState categoryTotals(List<CategoryTotal> categoryTotals);
+
+  ExpenseState selectedCategory(ExpenseCategory? selectedCategory);
 
   /// Creates a new instance with the provided field values.
   /// Passing `null` to a nullable field nullifies it, while `null` for a non-nullable field is ignored. To update a single field use `ExpenseState(...).copyWith.fieldName(value)`.
@@ -22,8 +26,10 @@ abstract class _$ExpenseStateCWProxy {
   /// ```
   ExpenseState call({
     List<Expense> expenses,
+    List<Expense> filteredExpenses,
     double totalAmount,
     List<CategoryTotal> categoryTotals,
+    ExpenseCategory? selectedCategory,
   });
 }
 
@@ -38,12 +44,20 @@ class _$ExpenseStateCWProxyImpl implements _$ExpenseStateCWProxy {
   ExpenseState expenses(List<Expense> expenses) => call(expenses: expenses);
 
   @override
+  ExpenseState filteredExpenses(List<Expense> filteredExpenses) =>
+      call(filteredExpenses: filteredExpenses);
+
+  @override
   ExpenseState totalAmount(double totalAmount) =>
       call(totalAmount: totalAmount);
 
   @override
   ExpenseState categoryTotals(List<CategoryTotal> categoryTotals) =>
       call(categoryTotals: categoryTotals);
+
+  @override
+  ExpenseState selectedCategory(ExpenseCategory? selectedCategory) =>
+      call(selectedCategory: selectedCategory);
 
   @override
   /// Creates a new instance with the provided field values.
@@ -55,14 +69,22 @@ class _$ExpenseStateCWProxyImpl implements _$ExpenseStateCWProxy {
   /// ```
   ExpenseState call({
     Object? expenses = const $CopyWithPlaceholder(),
+    Object? filteredExpenses = const $CopyWithPlaceholder(),
     Object? totalAmount = const $CopyWithPlaceholder(),
     Object? categoryTotals = const $CopyWithPlaceholder(),
+    Object? selectedCategory = const $CopyWithPlaceholder(),
   }) {
     return ExpenseState(
       expenses: expenses == const $CopyWithPlaceholder() || expenses == null
           ? _value.expenses
           // ignore: cast_nullable_to_non_nullable
           : expenses as List<Expense>,
+      filteredExpenses:
+          filteredExpenses == const $CopyWithPlaceholder() ||
+              filteredExpenses == null
+          ? _value.filteredExpenses
+          // ignore: cast_nullable_to_non_nullable
+          : filteredExpenses as List<Expense>,
       totalAmount:
           totalAmount == const $CopyWithPlaceholder() || totalAmount == null
           ? _value.totalAmount
@@ -74,6 +96,10 @@ class _$ExpenseStateCWProxyImpl implements _$ExpenseStateCWProxy {
           ? _value.categoryTotals
           // ignore: cast_nullable_to_non_nullable
           : categoryTotals as List<CategoryTotal>,
+      selectedCategory: selectedCategory == const $CopyWithPlaceholder()
+          ? _value.selectedCategory
+          // ignore: cast_nullable_to_non_nullable
+          : selectedCategory as ExpenseCategory?,
     );
   }
 }

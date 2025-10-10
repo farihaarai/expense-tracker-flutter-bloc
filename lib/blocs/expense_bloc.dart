@@ -15,6 +15,8 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
     on<AddExpense>(_onAddExpenseEvent);
     on<DeleteExpense>(_onDeleteExpenseEvent);
     on<EditExpense>(_onEditExpenseEvent);
+    on<FilterByCategory>(_onFilterByCategoryEvent);
+    on<ClearFilter>(_onClearFilterEvent);
   }
 
   Future<void> _onLoadExpensesEvent(
@@ -130,4 +132,34 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   //   emit(state.copyWith(expenses: updatedList, totalAmount: updatedTotal));
   // }
+
+  void _onFilterByCategoryEvent(
+    FilterByCategory event,
+    Emitter<ExpenseState> emit,
+  ) {
+    final filtered = state.expenses
+        .where((e) => e.category == event.category)
+        .toList();
+
+    emit(
+      state.copyWith(
+        filteredExpenses: filtered,
+        totalAmount: _calculateTotal(filtered),
+        selectedCategory: event.category,
+      ),
+    );
+  }
+
+  void _onClearFilterEvent(ClearFilter event, Emitter<ExpenseState> emit) {
+    emit(
+      state.copyWith(
+        filteredExpenses: state.expenses,
+        totalAmount: _calculateTotal(state.expenses),
+        selectedCategory: null,
+      ),
+    );
+  }
+
+  double _calculateTotal(List<Expense> expenses) =>
+      expenses.fold(0, (sum, e) => sum + e.amount);
 }

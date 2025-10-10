@@ -51,14 +51,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                ),
-                builder: (_) => const AddExpenseSheet(),
-              );
+              _openAddExpenseSheet();
             },
             icon: const Icon(Icons.add, color: Colors.white),
           ),

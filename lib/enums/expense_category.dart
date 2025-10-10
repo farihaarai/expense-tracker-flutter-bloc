@@ -1,1 +1,1 @@
-enum ExpenseCategory { Food, Shopping, Bills, Fun, Education, Travel, Others }
+enum ExpenseCategory { Food, Grocery, Shopping, Bills, Fun, Travel, Others }

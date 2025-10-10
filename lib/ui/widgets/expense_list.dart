@@ -15,10 +15,17 @@ class ExpenseList extends StatelessWidget {
 
     return BlocBuilder<ExpenseBloc, ExpenseState>(
       builder: (context, state) {
-        if (state.expenses.isEmpty) {
+        // Decide which list to show: filtered or all
+        final expensesToShow = (state.selectedCategory != null)
+            ? state.filteredExpenses
+            : state.expenses;
+
+        if (expensesToShow.isEmpty) {
           return Center(
             child: Text(
-              "No expenses yet 💸\nTap 'Add Expense' to start tracking!",
+              state.selectedCategory != null
+                  ? "No expenses in this category 💸"
+                  : "No expenses yet 💸\nTap 'Add Expense' to start tracking!",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -29,12 +36,12 @@ class ExpenseList extends StatelessWidget {
           );
         }
 
-        final sortedExpenses = List.of(state.expenses)
+        final sortedExpenses = List.of(expensesToShow)
           ..sort((a, b) => b.date.compareTo(a.date));
 
         return ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          itemCount: state.expenses.length,
+          itemCount: sortedExpenses.length,
           itemBuilder: (context, index) {
             final expense = sortedExpenses[index];
 
